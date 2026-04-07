@@ -1,17 +1,18 @@
-// 🔹 CHAT FUNCTION
+const BASE_URL = "https://retail-mini-ai-assistant-bot.onrender.com";
+
+// CHAT FUNCTION
 async function send() {
     let input = document.getElementById("input").value;
 
     if (!input) return;
 
-    let res = await fetch(`http://127.0.0.1:8000/chat/?query=${input}`);
+    let res = await fetch(`${BASE_URL}/chat/?query=${encodeURIComponent(input)}`);
     let data = await res.json();
 
     document.getElementById("response").innerText = data.response;
 }
 
-
-// 🔹 VOICE INPUT
+// VOICE INPUT
 function startVoice() {
     let recognition = new webkitSpeechRecognition();
     recognition.lang = "en-US";
@@ -23,16 +24,14 @@ function startVoice() {
     recognition.start();
 }
 
-
-// 🔹 SALES GRAPH FUNCTION
+// SALES GRAPH FUNCTION
 async function getSales() {
     let input = document.getElementById("input").value;
 
-    // extract year (default 2024 if not given)
     let yearMatch = input.match(/\d{4}/);
     let year = yearMatch ? yearMatch[0] : 2024;
 
-    let res = await fetch(`http://127.0.0.1:8000/sales-by-year/?year=${year}`);
+    let res = await fetch(`${BASE_URL}/sales-by-year/?year=${year}`);
     let data = await res.json();
 
     let labels = [];
@@ -46,14 +45,12 @@ async function getSales() {
     drawChart(labels, values, year);
 }
 
-
-// 🔹 CHART DRAW FUNCTION
+// CHART DRAW FUNCTION
 let chart;
 
 function drawChart(labels, data, year) {
     const ctx = document.getElementById('salesChart').getContext('2d');
 
-    // remove old chart
     if (chart) {
         chart.destroy();
     }
