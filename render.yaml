@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: retail-mini-ai-assistant
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SQLITE_DB_PATH
+        value: /var/data/retail_ai.sqlite3
+    disk:
+      name: retail-data
+      mountPath: /var/data
+      sizeGB: 1
